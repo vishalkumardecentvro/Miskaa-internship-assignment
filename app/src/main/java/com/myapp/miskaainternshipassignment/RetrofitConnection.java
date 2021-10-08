@@ -1,12 +1,15 @@
 package com.myapp.miskaainternshipassignment;
 
+import java.util.List;
+
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 
 public class RetrofitConnection {
-  public static SpacexCrewApiCalls spacexCrewApiCalls = null;
   private static final String baseUrl = "https://api.spacexdata.com/v4/";
+  public static SpacexCrewApiCalls spacexCrewApiCalls = null;
 
   public static SpacexCrewApiCalls getSpacexCrewApiCalls() {
     if (spacexCrewApiCalls == null) {
@@ -21,6 +24,6 @@ public class RetrofitConnection {
 
   interface SpacexCrewApiCalls {
     @GET("crew")
-    void getAllSpacexCrew();
+    Call<List<Crew>> getAllSpacexCrew();
   }
 }

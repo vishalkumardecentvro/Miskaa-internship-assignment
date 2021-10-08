@@ -1,8 +1,15 @@
 package com.myapp.miskaainternshipassignment;
 
+import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ArchitecturalFunctions {
 
@@ -34,7 +41,20 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
 
   @Override
   public void load() {
+    Call<List<Crew>> getSpacexCrew = RetrofitConnection.getSpacexCrewApiCalls().getAllSpacexCrew();
+    getSpacexCrew.enqueue(new Callback<List<Crew>>() {
+      @Override
+      public void onResponse(Call<List<Crew>> call, Response<List<Crew>> response) {
+        assert response.body() != null;
+        for (Crew s : response.body()) {
+          Log.i("--resp--", s.getName());
+        }
+      }
 
+      @Override
+      public void onFailure(Call<List<Crew>> call, Throwable t) {
 
+      }
+    });
   }
 }
