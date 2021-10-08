@@ -22,6 +22,5 @@ public class RetrofitConnection {
   interface SpacexCrewApiCalls {
     @GET("crew")
     void getAllSpacexCrew();
-
   }
 }

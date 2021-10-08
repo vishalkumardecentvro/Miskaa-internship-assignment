@@ -35,5 +35,6 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
   @Override
   public void load() {
 
+
   }
 }
