@@ -67,10 +67,8 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
 
   @Override
   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.deleteAll:
-        processDeleteAllNotes();
-        break;
+    if (item.getItemId() == R.id.deleteAll) {
+      processDeleteAllNotes();
     }
     return super.onOptionsItemSelected(item);
   }
@@ -78,9 +76,7 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
   @Override
   public void instantiate() {
     checkInternetConnection();
-    if (!isConnected) {
 
-    }
     sharedPreferences = getSharedPreferences("crew", MODE_PRIVATE);
     crewAdapter = new CrewAdapter(this);
     crewView = ViewModelProviders.of(this).get(CrewView.class);
@@ -112,10 +108,8 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
     getSpacexCrew.enqueue(new Callback<List<CrewEntity>>() {
       @Override
       public void onResponse(Call<List<CrewEntity>> call, Response<List<CrewEntity>> crewResponse) {
-        if (crewResponse != null) {
-          binding.tvEmpty.setVisibility(View.GONE);
-          crewAdapter.setCrewList(crewResponse.body());
-        }
+        binding.tvEmpty.setVisibility(View.GONE);
+        crewAdapter.setCrewList(crewResponse.body());
         saveDataOffline(crewResponse.body());
       }
 
@@ -127,18 +121,15 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
   }
 
   private void loadDataFromRoom() {
-    crewView.getAllCrews().observe(this, new Observer<List<CrewEntity>>() {
-      @Override
-      public void onChanged(List<CrewEntity> crewEntityList) {
+    crewView.getAllCrews().observe(this, crewEntityList -> {
 
-        if (crewEntityList.size() > 0) {
-          binding.tvEmpty.setVisibility(View.GONE);
-          crewAdapter.setCrewList(crewEntityList);
-        } else {
-          binding.tvEmpty.setVisibility(View.VISIBLE);
-          Toast.makeText(MainActivity.this, "No data in offline mode!", Toast.LENGTH_SHORT).show();
-          crewAdapter.setCrewList(new ArrayList<>());
-        }
+      if (crewEntityList.size() > 0) {
+        binding.tvEmpty.setVisibility(View.GONE);
+        crewAdapter.setCrewList(crewEntityList);
+      } else {
+        binding.tvEmpty.setVisibility(View.VISIBLE);
+        Toast.makeText(MainActivity.this, "No data in offline mode!", Toast.LENGTH_SHORT).show();
+        crewAdapter.setCrewList(new ArrayList<>());
       }
     });
   }
@@ -158,16 +149,8 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
     new MaterialAlertDialogBuilder(MainActivity.this)
             .setTitle("Delete all crew members?")
             .setMessage("Once deleted cannot be undone!")
-            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-              @Override
-              public void onClick(DialogInterface dialogInterface, int i) {
-              }
-            }).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialogInterface, int i) {
-        deleteAllCrewMembers();
-      }
-    }).show();
+            .setNegativeButton("Cancel", (dialogInterface, i) -> {
+            }).setPositiveButton("Delete", (dialogInterface, i) -> deleteAllCrewMembers()).show();
   }
 
   private void deleteAllCrewMembers() {
