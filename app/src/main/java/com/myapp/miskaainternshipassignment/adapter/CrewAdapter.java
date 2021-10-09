@@ -7,16 +7,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.myapp.miskaainternshipassignment.Crew;
 import com.myapp.miskaainternshipassignment.R;
 import com.myapp.miskaainternshipassignment.databinding.RvCrewBinding;
+import com.myapp.miskaainternshipassignment.room.entity.CrewEntity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.ViewHolder> {
-  private List<Crew> crewList = new ArrayList<>();
+  private List<CrewEntity> crewEntityList = new ArrayList<>();
   private Context context;
 
   public CrewAdapter(Context context) {
@@ -37,11 +37,11 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.ViewHolder> {
 
   @Override
   public int getItemCount() {
-    return crewList.size();
+    return crewEntityList.size();
   }
 
-  public void setCrewList(List<Crew> crewList) {
-    this.crewList = crewList;
+  public void setCrewList(List<CrewEntity> crewEntityList) {
+    this.crewEntityList = crewEntityList;
     notifyDataSetChanged();
   }
 
@@ -54,16 +54,16 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.ViewHolder> {
     }
 
     private void populate(int position) {
-      if (crewList.get(position).getStatus().equals("active"))
+      if (crewEntityList.get(position).getStatus().equals("active"))
         binding.tvStatus.setBackgroundColor(context.getResources().getColor(R.color.green));
       else
         binding.tvStatus.setBackgroundColor(context.getResources().getColor(R.color.red));
 
-      binding.tvStatus.setText(crewList.get(position).getStatus());
-      binding.tvName.setText(crewList.get(position).getName());
-      binding.tvAgency.setText(crewList.get(position).getAgency());
-      binding.tvHyperLink.setText(crewList.get(position).getWikipedia());
-      Picasso.get().load(crewList.get(position).getImage()).into(binding.ivCrewImage);
+      binding.tvStatus.setText(crewEntityList.get(position).getStatus());
+      binding.tvName.setText(crewEntityList.get(position).getName());
+      binding.tvAgency.setText(crewEntityList.get(position).getAgency());
+      binding.tvHyperLink.setText(crewEntityList.get(position).getWikipedia());
+      Picasso.get().load(crewEntityList.get(position).getImage()).into(binding.ivCrewImage);
     }
   }
 }

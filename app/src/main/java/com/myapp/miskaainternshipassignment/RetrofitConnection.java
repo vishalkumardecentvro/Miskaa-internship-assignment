@@ -1,5 +1,7 @@
 package com.myapp.miskaainternshipassignment;
 
+import com.myapp.miskaainternshipassignment.room.entity.CrewEntity;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -22,8 +24,8 @@ public class RetrofitConnection {
     return spacexCrewApiCalls;
   }
 
-  interface SpacexCrewApiCalls {
+  public interface SpacexCrewApiCalls {
     @GET("crew")
-    Call<List<Crew>> getAllSpacexCrew();
+    Call<List<CrewEntity>> getAllSpacexCrew();
   }
 }
