@@ -1,9 +1,12 @@
 package com.myapp.miskaainternshipassignment;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.myapp.miskaainternshipassignment.adapter.CrewAdapter;
+import com.myapp.miskaainternshipassignment.databinding.ActivityMainBinding;
 
 import java.util.List;
 
@@ -12,11 +15,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ArchitecturalFunctions {
+  private CrewAdapter crewAdapter;
+  private ActivityMainBinding binding;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    binding = ActivityMainBinding.inflate(getLayoutInflater());
+    setContentView(binding.getRoot());
 
     instantiate();
     initialize();
@@ -26,12 +32,12 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
 
   @Override
   public void instantiate() {
-
+    crewAdapter = new CrewAdapter(this);
   }
 
   @Override
   public void initialize() {
-
+    binding.rvSpacexCrew.setAdapter(crewAdapter);
   }
 
   @Override
@@ -44,16 +50,15 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
     Call<List<Crew>> getSpacexCrew = RetrofitConnection.getSpacexCrewApiCalls().getAllSpacexCrew();
     getSpacexCrew.enqueue(new Callback<List<Crew>>() {
       @Override
-      public void onResponse(Call<List<Crew>> call, Response<List<Crew>> response) {
-        assert response.body() != null;
-        for (Crew s : response.body()) {
-          Log.i("--resp--", s.getName());
+      public void onResponse(Call<List<Crew>> call, Response<List<Crew>> crewResponse) {
+        if (crewResponse != null) {
+          crewAdapter.setCrewList(crewResponse.body());
         }
       }
 
       @Override
       public void onFailure(Call<List<Crew>> call, Throwable t) {
-
+        Toast.makeText(MainActivity.this, "Not able to fetch data!", Toast.LENGTH_SHORT).show();
       }
     });
   }
