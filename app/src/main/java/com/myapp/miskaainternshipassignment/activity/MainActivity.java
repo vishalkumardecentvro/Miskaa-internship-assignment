@@ -3,9 +3,9 @@ package com.myapp.miskaainternshipassignment.activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
   private ActivityMainBinding binding;
   private CrewView crewView;
   private boolean isConnected = true;
-  private boolean isDataStored = false;
   private SharedPreferences sharedPreferences;
 
   @Override
@@ -53,6 +52,16 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.delete_all, menu);
+    MenuItem menuItem = menu.findItem(R.id.deleteAll);
+    if (isConnected) {
+
+      if (menuItem != null)
+        menuItem.setVisible(false);
+
+    } else {
+      if (menuItem != null)
+        menuItem.setVisible(true);
+    }
     return super.onCreateOptionsMenu(menu);
   }
 
@@ -69,7 +78,9 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
   @Override
   public void instantiate() {
     checkInternetConnection();
+    if (!isConnected) {
 
+    }
     sharedPreferences = getSharedPreferences("crew", MODE_PRIVATE);
     crewAdapter = new CrewAdapter(this);
     crewView = ViewModelProviders.of(this).get(CrewView.class);
@@ -102,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
       @Override
       public void onResponse(Call<List<CrewEntity>> call, Response<List<CrewEntity>> crewResponse) {
         if (crewResponse != null) {
+          binding.tvEmpty.setVisibility(View.GONE);
           crewAdapter.setCrewList(crewResponse.body());
         }
         saveDataOffline(crewResponse.body());
@@ -110,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
       @Override
       public void onFailure(Call<List<CrewEntity>> call, Throwable t) {
         Toast.makeText(MainActivity.this, "Not able to fetch data!", Toast.LENGTH_SHORT).show();
-        Log.i("--retrofit--", t.toString());
       }
     });
   }
@@ -119,10 +130,12 @@ public class MainActivity extends AppCompatActivity implements ArchitecturalFunc
     crewView.getAllCrews().observe(this, new Observer<List<CrewEntity>>() {
       @Override
       public void onChanged(List<CrewEntity> crewEntityList) {
-        Log.i("--size--", "crew List size: " + crewEntityList.size());
+
         if (crewEntityList.size() > 0) {
+          binding.tvEmpty.setVisibility(View.GONE);
           crewAdapter.setCrewList(crewEntityList);
         } else {
+          binding.tvEmpty.setVisibility(View.VISIBLE);
           Toast.makeText(MainActivity.this, "No data in offline mode!", Toast.LENGTH_SHORT).show();
           crewAdapter.setCrewList(new ArrayList<>());
         }
