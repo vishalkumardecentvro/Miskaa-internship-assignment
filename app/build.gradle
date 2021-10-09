@@ -41,15 +41,14 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version" // ViewModel
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version" // LiveData
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
-    // Annotation processor
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"// Annotation processor
     implementation "androidx.room:room-runtime:$room_version" // Room
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     implementation 'com.squareup.retrofit2:retrofit:2.8.0' // Retrofit
     implementation 'com.squareup.retrofit2:converter-gson:2.8.0' // GSON converter
     implementation 'com.squareup.picasso:picasso:2.71828' // picasso
-
+    implementation 'com.github.MohamedWessam:no-internet-layout:0.1.1'// no internet
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

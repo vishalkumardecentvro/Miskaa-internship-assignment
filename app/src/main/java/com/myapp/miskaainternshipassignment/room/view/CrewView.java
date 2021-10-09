@@ -25,6 +25,9 @@ public class CrewView extends AndroidViewModel {
 
   public void insertCrewMembers(CrewEntity crewEntity){
     crewRepository.insertCrewMembers(crewEntity);
+  }
 
+  public void deleteAllCrews(){
+    crewRepository.deleteAllCrewMembers();
   }
 }
