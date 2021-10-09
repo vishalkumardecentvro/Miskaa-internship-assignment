@@ -1,7 +1,6 @@
 package com.myapp.miskaainternshipassignment.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.myapp.miskaainternshipassignment.R;
 import com.myapp.miskaainternshipassignment.databinding.RvCrewBinding;
 import com.myapp.miskaainternshipassignment.room.entity.CrewEntity;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -67,29 +65,7 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.ViewHolder> {
       binding.tvHyperLink.setText(crewEntityList.get(position).getWikipedia());
       Picasso.get().
               load(crewEntityList.get(position).getImage()).
-              into(binding.ivCrewImage, new Callback() {
-                @Override
-                public void onSuccess() {
-
-                }
-
-                @Override
-                public void onError(Exception e) {
-                  Picasso.get()
-                          .load(crewEntityList.get(position).getImage())
-                          .into(binding.ivCrewImage, new Callback() {
-                            @Override
-                            public void onSuccess() {
-
-                            }
-
-                            @Override
-                            public void onError(Exception e) {
-                              Log.i("Picasso", "Could not fetch image");
-                            }
-                          });
-                }
-              });
+              into(binding.ivCrewImage);
     }
   }
 }
